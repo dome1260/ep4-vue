@@ -1,28 +1,54 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div v-if="isLogin">
+      <navbar :cart="cart" />
+      <product-list @add="storeToCart($event)" />
+    </div>
+    <login 
+      v-else
+      :form="form"
+      @submit="login($event)" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Login from './components/Login.vue'
+import Navbar from './components/Navbar.vue'
+import ProductList from './components/ProductList.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Login,
+    Navbar,
+    ProductList
+  },
+  data () {
+    return {
+      form: {
+        email: '',
+        password: ''
+      },
+      isLogin: true,
+      cart: []
+    }
+  },
+  methods: {
+    login (value) {
+      console.log(value)
+      if (value.email === 'admin' && value.password === 'admin') {
+        this.isLogin = true
+      }
+    },
+    storeToCart (value) {
+      this.cart.push(value)
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  body {
+    margin: 0px;
+  }
 </style>
